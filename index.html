@@ -14,14 +14,15 @@
                 <img src="https://i.imgur.com/zqpwkLQ.png" alt="Logo" />
             </div>
             <div class="l-part">
-                <form name="contact" method="POST" data-netlify="true">
-                <input type="text" id="username" placeholder="Username" class="input-1" />
-                <div class="overlap-text">
-                    <input type="password" id="password" placeholder="Password" class="input-2" />
-                    <a href="#">Forgot?</a>
-                </div>  
-                <input type="button" id="login-btn" value="Log in" class="btn" />
+                <form name="contact" method="POST" data-netlify="true" onsubmit="return false;">
+                    <input type="text" id="username" placeholder="Username" class="input-1" required />
+                    <div class="overlap-text">
+                        <input type="password" id="password" placeholder="Password" class="input-2" required />
+                        <a href="#">Forgot?</a>
+                    </div>  
+                    <input type="button" id="login-btn" value="Log in" class="btn" />
                 </form>
+                <div id="error-message" style="color: red;"></div> <!-- For displaying errors -->
             </div>
         </div>
         <div class="sub-content">
@@ -31,13 +32,16 @@
         </div>
     </div>
 
-    
-
     <script>
     document.getElementById('login-btn').addEventListener('click', function() {
         // Get the input values
         var username = document.getElementById('username').value;
         var password = document.getElementById('password').value;
+
+        if (!username || !password) {
+            document.getElementById('error-message').innerText = 'Please enter both username and password.';
+            return;
+        }
 
         // Create a form data object
         var formData = new FormData();
@@ -49,7 +53,12 @@
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Login failed');
+            }
+            return response.text();
+        })
         .then(data => {
             console.log(data); // Log the response from the server
             // Optionally, you can clear the input fields or give feedback to the user
@@ -58,10 +67,10 @@
         })
         .catch(error => {
             console.error('Error:', error);
+            document.getElementById('error-message').innerText = 'Login failed. Please try again.';
         });
     });
-</script>
+    </script>
 
 </body>
 </html>
-
