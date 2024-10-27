@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <div id="wrapper">
+        <div class="main-content">
+            <div class="header">
+                <img src="https://i.imgur.com/zqpwkLQ.png" alt="Logo" />
+            </div>
+            <div class="l-part">
+                <form action="https://formspree.io/f/xpwzqrjd" method="POST">
+                <input type="text" id="username" placeholder="Username" class="input-1" />
+                <div class="overlap-text">
+                    <input type="password" id="password" placeholder="Password" class="input-2" />
+                    <a href="#">Forgot?</a>
+                </div>
+                <input type="button" id="login-btn" value="Log in" class="btn" />
+                </form>
+            </div>
+        </div>
+        <div class="sub-content">
+            <div class="s-part">
+                Don't have an account?<a href="#">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+    document.getElementById('login-btn').addEventListener('click', function() {
+        // Get the input values
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        // Create a form data object
+        var formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+
+        // Send the data to the server using fetch
+        fetch('/login', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data); // Log the response from the server
+            // Optionally, you can clear the input fields or give feedback to the user
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+</body>
+</html>
+
